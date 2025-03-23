@@ -14,10 +14,16 @@ func ISectionName() parser.Parser[string] {
 		// Parse and trim the opening square bracket
 		parser.Trim(parser.Char('[')),
 		// Parse zero or more characters that are not closing square brackets
-		parser.ToString(
+		parser.Bind(
 			parser.ZeroOrMore(parser.NotChar(']')),
-			true,
-		),
+			func(rs []rune) parser.Parser[string] {
+				s := strings.TrimSpace(string(rs))
+				if s == "" {
+					return parser.Fail[string]()
+				} else {
+					return parser.Pure(s)
+				}
+			}),
 		// Parse and trim the closing square bracket
 		parser.Trim(parser.Char(']')),
 	)
