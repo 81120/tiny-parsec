@@ -196,3 +196,14 @@ func Lazy[T any](f func() Parser[T]) Parser[T] {
 		return f().Parse(s)
 	})
 }
+
+// ToString converts the result of a parser to a string.
+// It takes a parser p of type T and returns a new parser that produces a string.
+func ToString[T rune | []rune](p Parser[T], shouldTrim bool) Parser[string] {
+	if shouldTrim {
+		p = Trim(p)
+	}
+	return Fmap(p, func(t T) string {
+		return string(t)
+	})
+}

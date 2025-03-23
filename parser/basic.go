@@ -42,6 +42,19 @@ func Char(c rune) Parser[rune] {
 	})
 }
 
+// NotChar creates a parser that matches a single character if it is not equal to the given character.
+//
+// Parameters:
+// - c: The character to not match.
+//
+// Returns:
+// - A parser that matches a single character if it is not equal to the given character.
+func NotChar(c rune) Parser[rune] {
+	return Satisfy(func(r rune) bool {
+		return r != c
+	})
+}
+
 // Str creates a parser that matches a given string at the beginning of the input.
 //
 // Parameters:
@@ -104,7 +117,7 @@ func Alphas() Parser[string] {
 // - A parser that matches a single whitespace character.
 func Space() Parser[rune] {
 	return Satisfy(func(r rune) bool {
-		return r == ' ' || r == '\t' || r == '\n'
+		return r == ' ' || r == '\t' || r == '\n' || r == '\r'
 	})
 }
 
